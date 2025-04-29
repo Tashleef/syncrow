@@ -4,11 +4,13 @@ import { UserRepository } from '../data/user.repository';
 import { CommonError } from 'src/common/error.service';
 import { UserDto } from '../api/dto/type';
 import { usersData } from 'src/db/seed/users.data';
+import { UserError } from './user-error.service';
 
 @Injectable()
 export class UserService {
   constructor(
     private readonly userRepository: UserRepository,
+    private readonly userError: UserError,
     private commonError: CommonError,
   ) {}
 
@@ -27,7 +29,7 @@ export class UserService {
     });
     if (user) {
       throw new HttpException(
-        'this.userError.userAlreadyExist()',
+        this.userError.userAlreadyExist(),
         HttpStatus.BAD_REQUEST,
       );
     }
