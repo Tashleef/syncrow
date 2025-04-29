@@ -17,6 +17,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
 
     let statusCode;
     let responseBody;
+    console.log('exception constructor', exception);
     switch (exception.constructor) {
       case HttpException: {
         const httpException = exception as any as HttpException;
@@ -43,9 +44,9 @@ export class AllExceptionsFilter implements ExceptionFilter {
       // case exception instanceof
       default: {
         const { message } = exception as { message: any };
-        statusCode = 500;
+        statusCode = (exception as any).status || 500;
         responseBody = {
-          statusCode,
+          statusCode: (exception as any).status || 500,
           error: {
             message,
             code: 101010,
